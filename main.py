@@ -16,7 +16,7 @@
 #
 import webapp2
 from server.templating import htmlHandler, jsonHandler
-from server.db import tickerDB
+from google.appengine.api import users
 from google.appengine.ext import db
 
 class HomeHandler(htmlHandler.Handle):
