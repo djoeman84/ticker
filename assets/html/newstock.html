@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html land="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>New Stock</title>
+	</head>
+	<body>
+		<form method="POST" action="/newstock">
+			<div>Name<input name="name" type="text"></div>
+			<div>Ticker Symbol<input name="ticker_symbol" type="text"></div>
+			<div>Risk Rating<input name="riskRating" type="number" min="0" max="100" step="1"></div>
+			<div>description<input name="description" type="text"></div>
+			<div>previous close<input name="previous_close" type="number" step="0.01"></div>
+			<div>Price Per Earnings<input name="ppe" type="number" step="0.01"></div>
+			<div><input type="submit"></div>
+		</form>
+	</body>
+<html>
