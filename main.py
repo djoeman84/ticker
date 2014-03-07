@@ -21,7 +21,7 @@ from google.appengine.ext import db
 
 class HomeHandler(htmlHandler.Handle):
 	def get(self):
-		self.render('ticker.html')
+		self.render('index.html')
 
 
 
@@ -34,70 +34,8 @@ class SimpleHandler(htmlHandler.Handle):
 		except:
 			self.render('404.html')
 
-class NewStockHandler(htmlHandler.Handle):
-	def get(self):
-		self.render('newstock.html')
-	def post(self):
-		name = self.request.get('name')
-		ticker_symbol = self.request.get('ticker_symbol')
-		riskRating = int(self.request.get('riskRating'))
-		description = self.request.get('description')
-		previous_close = float(self.request.get('previous_close'))
-		ppe = float(self.request.get('ppe'))
-		if name and ticker_symbol and riskRating and description and previous_close and ppe:
-			s = tickerDB.Stock(name=name,
-				ticker_symbol=ticker_symbol,
-				riskRating=riskRating,
-				description=description,
-				previous_close=previous_close,
-				ppe=ppe
-			)
-			s.put()
-		self.redirect('/newstock')
-
-class StocksHandler(htmlHandler.Handle):
-	def get(self):
-		q = tickerDB.Stock.all()
-		q.order("name")
-		rs = q.run()
-		self.render('stocks.html',stocks = rs)
-
-		
-class StockSearchHandler(jsonHandler.Handle):
-	def get(self):
-		query = self.request.get('q')
-		q = tickerDB.Stock.all()
-		q.order("name")
-		rs = q.run()
-
-		# print "here"
-		jsonRes = []#OR ticker_symbol IN :1
-		for r in rs:
-			if r.name.upper().find(query.upper()) == 0 or r.ticker_symbol.upper().find(query.upper()) == 0:
-				jsonRes.append({'name':r.name, 'ticker_symbol':r.ticker_symbol, 'riskRating':r.riskRating, 'description':r.description, 'previous_close':r.previous_close, 'ppe':r.ppe})
-		self.publish(jsonRes)
-		
-		
-class stockAutoComplete(jsonHandler.Handle):
-	def get(self):
-		query = self.request.get('term')
-		q = tickerDB.Stock.all()
-		q.order("name")
-		rs = q.run()
-
-		# print "here"
-		jsonRes = []
-		for r in rs:
-			if r.name.upper().find(query.upper()) == 0 or r.ticker_symbol.upper().find(query.upper()) == 0:
-				jsonRes.append({'value':r.ticker_symbol,'label':r.name,'name':r.name, 'ticker_symbol':r.ticker_symbol, 'riskRating':r.riskRating, 'description':r.description, 'previous_close':r.previous_close, 'ppe':r.ppe})
-		self.publish(jsonRes)
-
 
 app = webapp2.WSGIApplication([
 	('/',                  HomeHandler),
-	('/newstock',          NewStockHandler),
-	('/stocks',            StocksHandler),
-	('/stockSearch',       StockSearchHandler),
-	('/stockAutoComplete', stockAutoComplete),
     ('/.*',                SimpleHandler)
 ], debug=True)

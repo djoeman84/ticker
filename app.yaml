@@ -1,13 +1,16 @@
 application: joon-ticker-app
-version: 1
+version: 2
 runtime: python27
-api_version: 1
+api_version: 2
 threadsafe: yes
 
 handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
+
+- url: /_ah/login_required
+  script: do_openid_login.app
 
 - url: /css
   static_dir: assets/css
@@ -20,6 +23,7 @@ handlers:
 
 - url: .*
   script: main.app
+  login: required
 
 libraries:
 - name: webapp2
