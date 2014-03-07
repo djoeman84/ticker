@@ -21,6 +21,10 @@ handlers:
 - url: /js
   static_dir: assets/js
 
+- url: /api/.*
+  script: api.app
+  login: required
+
 - url: .*
   script: main.app
   login: required

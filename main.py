@@ -15,17 +15,17 @@
 # limitations under the License.
 #
 import webapp2
-from server.templating import htmlHandler, jsonHandler
-from google.appengine.api import users
-from google.appengine.ext import db
+from server.templating import htmlHandler
+from server.db.appDB import User
 
-class HomeHandler(htmlHandler.Handle):
-	def get(self):
+class HomeHandler(htmlHandler.HandleUserCentric):
+	def getWithUser(self, user):
+
 		self.render('index.html')
 
 
 
-class SimpleHandler(htmlHandler.Handle):
+class SimpleHandler(htmlHandler.HandleUserCentric):
 	def get(self):
 		path = self.request.path
 		path = path.replace('/','')
